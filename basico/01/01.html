@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hola mundo Vue JS</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{titulo}}</h1>
+
+        <input type="text" v-model="nuevaFruta" @keyup.enter="agregarFruta">
+        <button @click="agregarFruta">Agregar</button>
+        <!-- <button v-on:click="agregarFruta">Agregar</button> -->
+
+        <h2>Colores</h2>
+        <ul>
+            <li v-for="color of colores">{{color}}</li>
+        </ul>
+
+        <h2>Frutas</h2>
+        <ul>
+            <li v-for="fruta of frutas">
+                <input type="number" v-model.number="fruta.cantidad">
+                {{fruta.nombre}}
+                <button @click="fruta.cantidad++">+</button>
+                <span v-if="fruta.cantidad === 0"> - Sin Stock</span>
+            </li>
+        </ul>
+
+        <h4>Total {{sumarFrutas}}</h4>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="01.js"></script>
+</body>
+</html>
