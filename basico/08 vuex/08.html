@@ -41,21 +41,27 @@
                 <!-- <button @click="$store.commit('aumentar')">+</button> -->
                 <button @click="aumentar">+</button>
                 <button @click="disminuir(2)">-</button>
+                <button @click="ObtenerCursos">Obtener Cursos</button>
                 <h1>Numero: {{numero}}</h1>
                 <!-- <h1>numero {{$store.state.numero}}</h1>-->
+                <ul>
+                    <li v-for="item of cursos">{{item.nombre}}</li>
+                </ul>
             </div>
             `,
             computed:{
-                ...Vuex.mapState(['numero']) //se colocan las variables del estado, para poder llamarlas por nombre dentro del template
+                ...Vuex.mapState(['numero', 'cursos']) //se colocan las variables del estado, para poder llamarlas por nombre dentro del template
             },
             methods:{
-                ...Vuex.mapMutations(['aumentar', 'disminuir'])
+                ...Vuex.mapMutations(['aumentar', 'disminuir']),
+                ...Vuex.mapActions(['ObtenerCursos'])
             }
         });
 
         const store = new Vuex.Store({
             state:{
-                numero:10
+                numero:10,
+                cursos:[]
             },
             mutations:{
                 aumentar(state){
@@ -63,10 +69,20 @@
                 },
                 disminuir(state, n){
                     state.numero -= n;
+                },
+                llenarCursos(state, cursosAccion){
+                    state.cursos = cursosAccion;
                 }
                 //aumentar(state){ //Tambien sirve
                   //  state.numero++;
                 //}
+            },
+            actions:{
+                ObtenerCursos: async function({commit}){
+                    const data = await fetch('cursos.json');
+                    const cursos = await data.json();
+                    commit('llenarCursos', cursos)
+                }
             }
         });
 
