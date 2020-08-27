@@ -1,21 +1,25 @@
 <template>
     <div>
-        <h1>Inicio</h1>
+        <p>Usuario: {{usuario.email}}</p>
+        <button @click="cerrarSesion">Cerrar sesión</button>
+        <h1>Lista Tareas</h1>
         <router-link to="/agregar">
-            <button>Agregar Tarea</button>
+            <button class="btn btn-success btn-block">Agregar Tarea</button>
         </router-link>
         
-        <ul>
-            <li v-for="(item, index) in tareas" :key="index">
-                {{item.nombre}} - {{item.id}}
-                <router-link :to="{name:'Editar', params:{id:item.id}}">
-                    <button class="btn">
-                        Editar
-                </button>
-                </router-link>
+        <ul class="list-group mt-5">
+            <li class="list-group-item" v-for="(item, index) in tareas" :key="index">
+                {{item.id}} - {{item.nombre}} 
+
+                <div class="float-right">
+                    <router-link :to="{name:'Editar', params:{id:item.id}}">
+                        <button class="btn btn-warning btn-sm mr-2">
+                            Editar
+                        </button>
+                    </router-link>
                 
-                <button class="btn" @click="eliminarTarea(item.id)">Eliminar</button>
-                
+                    <button class="btn btn-danger btn-sm" @click="eliminarTarea(item.id)">Eliminar</button>
+                </div> 
             </li>
         </ul>
     </div>
@@ -29,10 +33,10 @@ export default {
         this.getTareas();
     },
     methods:{
-        ...mapActions(['getTareas', 'eliminarTarea'])
+        ...mapActions(['getTareas', 'eliminarTarea', 'cerrarSesion'])
     },
     computed:{
-        ...mapState(['tareas'])
+        ...mapState(['tareas', 'usuario'])
     }
 }
 </script>

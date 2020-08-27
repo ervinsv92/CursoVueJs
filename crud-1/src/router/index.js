@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import {auth} from '../firebase';
 
 Vue.use(VueRouter)
 
@@ -7,7 +8,8 @@ Vue.use(VueRouter)
   {
     path: '/',
     name: 'Inicio',
-    component: () => import(/* webpackChunkName: "inicio" */ '../views/Inicio.vue')
+    component: () => import(/* webpackChunkName: "inicio" */ '../views/Inicio.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/editar/:id',
@@ -18,6 +20,16 @@ Vue.use(VueRouter)
     path: '/agregar',
     name: 'Agregar',
     component: () => import(/* webpackChunkName: "agregar" */ '../views/Agregar.vue')
+  },
+  {
+    path: '/registro',
+    name: 'Registro',
+    component: () => import(/* webpackChunkName: "registro" */ '../views/Registro.vue')
+  },
+  {
+    path: '/acceso',
+    name: 'Acceso',
+    component: () => import(/* webpackChunkName: "acceso" */ '../views/Acceso.vue')
   }
 ]
 
@@ -26,5 +38,19 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+router.beforeEach((to, from, next)=>{
+  if(to.matched.some(record => record.meta.requiresAuth)){
+    const usuario = auth.currentUser;
+    if(!usuario){
+      next({path:'/acceso'})
+    }else{
+      next()
+    }
+  }else{
+    next()
+  }
+})
+
 
 export default router
