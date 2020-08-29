@@ -1,6 +1,7 @@
 <template>
     <div>
         <p>Usuario: {{usuario.email}}</p>
+        <button v-if="existeUsuario">Logueado</button>
         <button @click="cerrarSesion">Cerrar sesión</button>
         <h1>Lista Tareas</h1>
         <router-link to="/agregar">
@@ -26,7 +27,7 @@
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex';
+import {mapActions, mapState, mapGetters} from 'vuex';
 export default {
     name: 'Inicio',
     created(){
@@ -36,7 +37,8 @@ export default {
         ...mapActions(['getTareas', 'eliminarTarea', 'cerrarSesion'])
     },
     computed:{
-        ...mapState(['tareas', 'usuario'])
+        ...mapState(['tareas', 'usuario']),
+        ...mapGetters(['existeUsuario'])
     }
 }
 </script>

@@ -13,7 +13,7 @@ auth.onAuthStateChanged(user => {
     //dispatch llama una funcion dentro del vuex
     store.dispatch('detectarUsuario', {email: user.email, uid: user.uid})
   }else{
-    console.log(user)
+    console.log("inicio", user)
     store.dispatch('detectarUsuario', user)
   }
 

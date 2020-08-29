@@ -62,12 +62,12 @@ export default new Vuex.Store({
           commit('setError', error)
         })
     },
-    cerrarSesion({commit}){
+    cerrarSesion({ commit }) {
       auth.signOut()
       router.push('/ingreso')
     },
-    detectarUsuario({commit}, usuario){
-      commit.setUsuario('setUsuario', usuario);
+    detectarUsuario({ commit }, usuario) {
+      commit('setUsuario', usuario);
     },
     getTareas({ commit }) {
       const tareas = []
@@ -113,6 +113,15 @@ export default new Vuex.Store({
           //dispatch('getTareas')//ejecuta una accion que se encuentre en vuex
           commit('setEliminarTarea', idTarea)
         })
+    }
+  },
+  getters: {
+    existeUsuario(state) {
+      if (state.usuario === null) {
+        return false
+      } else {
+        return true
+      }
     }
   },
   modules: {
