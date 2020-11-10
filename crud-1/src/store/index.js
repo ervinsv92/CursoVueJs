@@ -38,8 +38,13 @@ export default new Vuex.Store({
             email: res.user.email,
             uid: res.user.uid
           }
-          commit('setUsuario', usuario)
-          router.push('/')
+
+          db.collection(res.user.email).add({
+            nombre:'Tarea de ejemplo'
+          }).then(doc => {
+            commit('setUsuario', usuario)
+            router.push('/')
+          }).catch(error => console.error(error))
         })
         .catch(error => {
           console.log(error)
@@ -64,14 +69,14 @@ export default new Vuex.Store({
     },
     cerrarSesion({ commit }) {
       auth.signOut()
-      router.push('/ingreso')
+      router.push('/acceso')
     },
     detectarUsuario({ commit }, usuario) {
       commit('setUsuario', usuario);
     },
-    getTareas({ commit }) {
+    getTareas({ commit , state}) {
       const tareas = []
-      db.collection('tareas').get().then(res => {
+      db.collection(state.usuario.email).get().then(res => {
         res.forEach(doc => {
           //console.log(doc.id);
           //console.log(doc.data());
@@ -84,31 +89,31 @@ export default new Vuex.Store({
         commit('setTareas', tareas)
       });
     },
-    getTarea({ commit }, idTarea) {
-      db.collection('tareas').doc(idTarea).get()
+    getTarea({ commit, state }, idTarea) {
+      db.collection(state.usuario.email).doc(idTarea).get()
         .then(doc => {
           let tarea = doc.data()
           tarea.id = doc.id
           commit('setTarea', tarea)
         })
     },
-    editarTarea({ commit }, tarea) {
-      db.collection('tareas').doc(tarea.id).update({
+    editarTarea({ commit, state }, tarea) {
+      db.collection(state.usuario.email).doc(tarea.id).update({
         nombre: tarea.nombre
       })
         .then(() => {
           router.push('/')
         })
     },
-    agregarTarea({ commit }, nombreTarea) {
-      db.collection('tareas').add({
+    agregarTarea({ commit, state }, nombreTarea) {
+      db.collection(state.usuario.email).add({
         nombre: nombreTarea
       }).then(doc => {
         router.push('/')
       })
     },
-    eliminarTarea({ commit, dispatch }, idTarea) {
-      db.collection('tareas').doc(idTarea).delete()
+    eliminarTarea({ commit, dispatch, state }, idTarea) {
+      db.collection(state.usuario.email).doc(idTarea).delete()
         .then(() => {
           //dispatch('getTareas')//ejecuta una accion que se encuentre en vuex
           commit('setEliminarTarea', idTarea)

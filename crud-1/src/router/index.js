@@ -14,12 +14,14 @@ Vue.use(VueRouter)
   {
     path: '/editar/:id',
     name: 'Editar',
-    component: () => import(/* webpackChunkName: "editar" */ '../views/Editar.vue')
+    component: () => import(/* webpackChunkName: "editar" */ '../views/Editar.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/agregar',
     name: 'Agregar',
-    component: () => import(/* webpackChunkName: "agregar" */ '../views/Agregar.vue')
+    component: () => import(/* webpackChunkName: "agregar" */ '../views/Agregar.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/registro',
