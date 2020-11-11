@@ -1,15 +1,22 @@
 <template>
 <div>
-    <h2>Accion saldo</h2>
+    <button @click="accion" :disabled="desactivar">{{texto}}</button>
 </div>
 </template>
 
 <script>
 export default {
     name: 'AccionSaldo',
-    data() {
-        return {
-
+    props:{
+        texto:String,
+        desactivar:{
+            type:Boolean,
+            default:false
+        }
+    },
+    methods: {
+        accion(){
+            this.$emit('accion')
         }
     },
 }
