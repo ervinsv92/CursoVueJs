@@ -3,37 +3,49 @@
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Categoría</th>
+      <th scope="col">Estado</th>
+      <th scope="col">Número</th>
+      <th scope="col">Acción</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
+    <tr v-for="item in tareas" :key="item.id">
+      <th scope="row">{{item.id}}</th>
+      <td>{{item.nombre}}</td>
+      <td>
+        {‌{item.categorias.join(', ')}}
+      </td>
+      <td>{{item.estado}}</td>
+      <td>{{item.numero}}</td>
+      <td>
+        <button class="btn btn-danger btn-sm" @click="deleteTareas(item.id)">Eliminar</button>
+        <router-link class="btn btn-warning ml-2 btn-sm"
+          :to="{
+            name:'Editar',
+            params:{
+              id: item.id
+            }
+          }"
+        >
+          Editar
+        </router-link>
+      </td>
     </tr>
   </tbody>
 </table>
 </template>
 
 <script>
+import {mapState, mapActions} from 'vuex';
 export default {
-
+  computed:{
+    ...mapState(['tareas'])
+  },
+  methods:{
+    ...mapActions(['deleteTareas'])
+  }
 }
 </script>
 

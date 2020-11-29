@@ -3,19 +3,21 @@
     <Input :tarea="tarea"/>
   </form>
   <hr />
-  <p>{{ tarea }}</p>
+  <ListaTareas />
 </template>
 
 <script>
 
 import Input from '../components/Input';
 import { mapActions } from 'vuex';
+import ListaTareas from '../components/ListaTareas'
 const shortid = require('shortid')
 
 export default {
   name: "Home",
   components: {
-    Input
+    Input,
+    ListaTareas
   },
   data() {
     return {
@@ -29,7 +31,7 @@ export default {
     };
   },
   methods:{
-    ...mapActions['setTareas'],
+    ...mapActions(['setTareas']),
     procesarFormulario(){
       console.log(this.tarea)
       if(this.tarea.nombre == ""){
